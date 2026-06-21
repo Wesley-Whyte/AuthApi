@@ -27,7 +27,7 @@ jobs:
         run: dotnet build "AuthApi/AuthApi.csproj" --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{github.workspace}}/myapp"
+        run: dotnet publish "AuthApi/AuthApi.csproj" -c Release -o "${{github.workspace}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
