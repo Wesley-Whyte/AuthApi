@@ -13,14 +13,11 @@ internal class Program
             Env.Load();
 
         var builder = WebApplication.CreateBuilder(args);
-        var authApiBaseUrl = builder.Configuration["AuthApi:BaseUrl"];
-        var JWTSigninKey = builder.Configuration["JWT:SigninKey"];
-        Console.WriteLine("Starting Auth API... Base URL: " + authApiBaseUrl + " JWT Signin Key: " + JWTSigninKey);
 
         // Add services to the container.
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
-        builder.Services.AddAuthInfrastructure(builder.Configuration);
+        builder.Services.AddAuthInfrastructure(builder.Configuration, builder.Environment.IsDevelopment());
         builder.Services.AddScoped<IAccountService, AccountService>();
 
         var app = builder.Build();
