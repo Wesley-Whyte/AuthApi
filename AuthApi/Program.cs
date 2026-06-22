@@ -11,7 +11,11 @@ internal class Program
     {
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
             Env.Load();
+
         var builder = WebApplication.CreateBuilder(args);
+        var authApiBaseUrl = builder.Configuration["AuthApi:BaseUrl"];
+        var JWTSigninKey = builder.Configuration["JWT:SigninKey"];
+        Console.WriteLine("Starting Auth API... Base URL: " + authApiBaseUrl + " JWT Signin Key: " + JWTSigninKey);
 
         // Add services to the container.
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
