@@ -53,6 +53,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: "AuthApi"
-          slot-name: "Production"
+          slot-name: "authapi-srvpr"
           package: .
           publish-profile: ${{ secrets.SRVPR_SLOT_PUBLISH_PROFILE }}
