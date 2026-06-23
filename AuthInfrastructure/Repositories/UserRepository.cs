@@ -3,6 +3,7 @@ using AuthApplication.Dtos.Account;
 using AuthApplication.Interface;
 using AuthInfrastructure.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthInfrastructure.Repositories;
 
@@ -41,7 +42,7 @@ public class UserRepository : IUserRepository
 
     public async Task<NewUserDto> LoginAsync(LoginDto loginDto)
     {
-        var user = _userManager.Users.FirstOrDefault(u => u.UserName == loginDto.Username);
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginDto.Username);
         if (user == null || user.Email == null || user.UserName == null) throw new Exception("User not found");
         var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
         if (!result) throw new Exception("Invalid password");

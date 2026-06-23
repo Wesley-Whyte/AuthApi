@@ -2,6 +2,8 @@ using AuthApplication.Interface;
 using AuthInfrastructure.Data;
 using AuthInfrastructure.Repositories;
 using AuthInfrastructure.Services;
+using Azure.Core;
+using Azure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,9 +15,17 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddAuthInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+
+        // register credential built from app registration
+        services.AddSingleton<TokenCredential>(_ => new ClientSecretCredential(configuration["Azure:TenantId"], configuration["Azure:ClientId"], configuration["Azure:ClientSecret"]));
+
+        // register interceptor
+        services.AddSingleton<AzureAdTokenConnectionInterceptor>();
+
         // Register your DbContext and repositories here
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        services.AddDbContext<ApplicationDbContext>((provider, options) =>
+            options.UseSqlServer(configuration.GetConnectionString("AzureConnection"), options => { })
+            .AddInterceptors(provider.GetRequiredService<AzureAdTokenConnectionInterceptor>()));
 
         services.AddIdentity<IdentityUser, IdentityRole>(options =>
         {
