@@ -55,4 +55,4 @@ jobs:
           app-name: "AuthApi"
           slot-name: "authapi-srvpr"
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A09B611A609241A78268AA98892060E0 }}
+          publish-profile: ${{ secrets.SRVPR_SLOT_PUBLISH_PROFILE }}
