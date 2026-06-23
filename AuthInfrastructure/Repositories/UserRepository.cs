@@ -28,7 +28,7 @@ public class UserRepository : IUserRepository
         var newUser = await _userManager.CreateAsync(user, registerDto.Password);
         if (!newUser.Succeeded) throw new Exception("User creation failed. " + newUser.Errors.FirstOrDefault()?.Description);
 
-        var role = await _userManager.AddToRoleAsync(user, "Admin");
+        var role = await _userManager.AddToRoleAsync(user, "User");
         if (!role.Succeeded) throw new Exception("Failed to assign role to user" + role.Errors.FirstOrDefault()?.Description);
 
         var roles = await _userManager.GetRolesAsync(user);
